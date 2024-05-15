@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      # Install all dependencies (including dependencies for running tests)
+      - npm install
+      - npm install @aws-sdk/client-ses
+      - npm install @aws-sdk/client-cognito-identity
+  pre_build:
+    commands:
+      - sed -ie s/AWS_DEFAULT_REGION/$AWS_DEFAULT_REGION/ template.yml
+      - sed -ie s/SES_SOURCE/$SES_SOURCE/ template.yml
+      - sed -ie s/COGNITO_USER_POOL_ID/$COGNITO_USER_POOL_ID/ template.yml
+      - sed -ie s/ACCOUNT_ID/$ACCOUNT_ID/ template.yml
+      # Discover and run unit tests in the '__tests__' directory
+      # - npm run test
+      # Remove all dependencies not needed for the Lambda deployment package (the packages from devDependencies in package.json)
+      - npm prune --production
+  build:
+    commands:
+      # Use AWS SAM to package the application by using AWS CloudFormation
+      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
+artifacts:
+  files:
+    - template-export.yml

@@ -1,0 +1,16 @@
+{
+    "name": "lambda-sqs",
+    "description": "Lambda-SQS starter application",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@aws-sdk/client-cognito-identity-provider": "^3.164.0",
+        "@aws-sdk/client-ses": "^3.163.0"
+    },
+    "devDependencies": {
+        "jest": "^25.4.0"
+    },
+    "scripts": {
+        "test": "jest"
+    }
+}
